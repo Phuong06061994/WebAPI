@@ -23,7 +23,7 @@ namespace WebAPI.Services
 
         public User GetByUserName(string userName)
         {
-           return context.Users.SingleOrDefault(s => s.)
+            return context.Users.SingleOrDefault(s => s.UserName == userName);
         }
     }
 }
