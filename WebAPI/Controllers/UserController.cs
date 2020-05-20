@@ -14,6 +14,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        static readonly Dictionary<Guid, AuthenticateModel> updates = new Dictionary<Guid, AuthenticateModel>();
         IUserService userService;
 
         public UserController(IUserService userService)
