@@ -38,6 +38,7 @@ namespace WebAPI
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
             services.AddTransient<IUserService, UserService>();
 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
