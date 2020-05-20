@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
 using WebAPI.Data;
 using WebAPI.Entities;
 using WebAPI.Services;
@@ -26,16 +28,23 @@ namespace WebAPI
             services.AddControllers();
             services.AddDbContext<APIContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
-            services.AddIdentity<User,Role>()
-               .Add
-               .AddDefaultTokenProviders();
+            services.AddIdentity<User, Role>()
+                    .AddEntityFrameworkStores<APIContext>()
+                    .AddDefaultTokenProviders();
 
             services.AddTransient<INewsService, NewsService>();
-            services.AddTransient <UserManager<User>, UserManager<User>>();
+            services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
-        }
+            services.AddTransient<IUserService, UserService>();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+            });
+
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -49,6 +58,13 @@ namespace WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
 
             app.UseEndpoints(endpoints =>
             {

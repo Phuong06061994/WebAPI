@@ -10,6 +10,5 @@ namespace WebAPI.Models
         [Required(ErrorMessage = "Enter PassWord")]
 
         public string Password { get; set; }
-        public int RoleId { get; set; }
     }
 }

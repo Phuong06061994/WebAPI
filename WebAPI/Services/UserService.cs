@@ -19,11 +19,11 @@ namespace WebAPI.Services
         private readonly APIContext context;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
-        private readonly UserManager<Role> roleManager;
+        private readonly RoleManager<Role> roleManager;
         private readonly IConfiguration config;
 
         public UserService(APIContext context, UserManager<User> userManager, SignInManager<User> signInManager, 
-            UserManager<Role> roleManager, IConfiguration config)
+            RoleManager<Role> roleManager, IConfiguration config)
         {
             this.context = context;
             this.userManager = userManager;
@@ -51,7 +51,7 @@ namespace WebAPI.Services
                 new Claim(ClaimTypes.Role, string.Join(";", role))
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens :Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(config["Tokens : Issuer"], config["Tokens : Issuer"], claims, expires: DateTime.Now.AddHours(2), signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -65,7 +65,6 @@ namespace WebAPI.Services
             {
                 UserName = model.Username,
                 Password = model.Password,
-                RoleId  = model.RoleId
             };
 
             var result = await userManager.CreateAsync(user, model.Password);

@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
+        public async Task<IActionResult> Authenticate([FromForm]AuthenticateModel model)
         {
             var resultToken = await userService.Authenticate(model);
             if (string.IsNullOrEmpty(resultToken))
@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]CreateUserModel model)
+        public async Task<IActionResult> Create([FromForm]CreateUserModel model)
         {
             var result = await userService.Create(model);
             if (!result)

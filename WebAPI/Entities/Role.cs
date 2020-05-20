@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,14 +9,10 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
-    public class Role
+    public class Role : IdentityRole<Guid>
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RoleId { get; set; }
-        public string RoleName { get; set; }
+        public string Description { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
 
     }
 }
