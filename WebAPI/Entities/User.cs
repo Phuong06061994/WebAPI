@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
-    public class User
+    public class User : IUserStore<AppUser, AppRole, AppDbContext, int, AppUserClaim, AppUserRole, AppUserLogin, AppUserToken, AppRoleClaim>
     {   
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

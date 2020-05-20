@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using WebAPI.Controllers;
 using WebAPI.Data;
+using WebAPI.Entities;
 using WebAPI.Services;
 
 namespace WebAPI
@@ -32,8 +26,14 @@ namespace WebAPI
             services.AddControllers();
             services.AddDbContext<APIContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            services.AddIdentity<User,Role>()
+               .Add
+               .AddDefaultTokenProviders();
 
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient <UserManager<User>, UserManager<User>>();
+            services.AddTransient<SignInManager<User>, SignInManager<User>>();
+            services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

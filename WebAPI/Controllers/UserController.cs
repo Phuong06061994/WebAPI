@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models;
@@ -20,17 +21,28 @@ namespace WebAPI.Controllers
             this.userService = userService;
         }
 
-        public IActionResult Login(AuthenticateModel model)
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
         {
-            if (ModelState.IsValid)
+            var resultToken = await userService.Authenticate(model);
+            if (string.IsNullOrEmpty(resultToken))
             {
-                var result = userService.FindForLogin(model.Username, model.Password);
+                return BadRequest("User or password is not correct");
             }
-            else
-            {
-                ModelState.AddModelError("","Login fail")
-            }
-            return null;
+            return Ok(new {token = resultToken } );
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody]CreateUserModel model)
+        {
+            var result = await userService.Create(model);
+            if (!result)
+            {
+                return BadRequest("Create new user is not successed");
+            }
+            return Ok();
+        }
+
     }
 }
