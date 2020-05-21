@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromForm]AuthenticateModel model)
+        public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
         {
             var resultToken = await userService.Authenticate(model);
             if (string.IsNullOrEmpty(resultToken))
@@ -45,13 +45,13 @@ namespace WebAPI.Controllers
             //HttpContext.Session.SetString("Token", resultToken);
             //var userCurrent = await userManager.GetUserAsync(HttpContext.User);
             var userCurrent = HttpContext.User;
-            return Ok(new { token = userCurrent.Identity.IsAuthenticated });
+            return Ok(new { token = resultToken});
             /*var name = User.Identity.Name;
             return Redirect("http://127.0.0.1:5500/admin.html");*/
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm]CreateUserModel model)
+        public async Task<IActionResult> Create([FromBody]CreateUserModel model)
         {
             var result = await userService.Create(model);
             if (!result)

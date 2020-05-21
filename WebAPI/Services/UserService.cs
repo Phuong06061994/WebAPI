@@ -34,7 +34,7 @@ namespace WebAPI.Services
 
         public async Task<string> Authenticate(AuthenticateModel model)
         {
-            var user = await userManager.FindByNameAsync(model.Username);
+            var user = await userManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
                 return null;
@@ -48,7 +48,7 @@ namespace WebAPI.Services
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, model.Username),
+                new Claim(ClaimTypes.Name, model.UserName),
                 new Claim(ClaimTypes.Role, string.Join(";", role))
             };
 
@@ -56,8 +56,6 @@ namespace WebAPI.Services
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(config["Tokens : Issuer"], config["Tokens : Issuer"], claims, expires: DateTime.Now.AddHours(2), signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(token);
-            
-
         }
 
         public async Task<bool> Create(CreateUserModel model)
