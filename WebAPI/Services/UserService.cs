@@ -39,12 +39,13 @@ namespace WebAPI.Services
             {
                 return null;
             }
-            var result = await signInManager.PasswordSignInAsync(user,model.Password,false,false);
+            var result = await signInManager.PasswordSignInAsync(user,model.Password,true,false);
             if (!result.Succeeded)
             {
                 return null;
             }
             var role = userManager.GetRolesAsync(user);
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, model.Username),

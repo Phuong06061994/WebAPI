@@ -23,6 +23,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IEnumerable<News> GetAll()
         {
             return newsService.GetAll();

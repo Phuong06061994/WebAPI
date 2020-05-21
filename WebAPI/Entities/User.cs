@@ -13,5 +13,6 @@ namespace WebAPI.Entities
     { 
         public string Password { get; set; }
 
+
     }
 }
