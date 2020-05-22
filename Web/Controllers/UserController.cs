@@ -78,7 +78,9 @@ namespace Web.Controllers
 
             validationParameters.ValidateLifetime = true;
 
+            validationParameters.ValidateAudience = true;
             validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
+            validationParameters.ValidateIssuer = true;
             validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
             validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
 

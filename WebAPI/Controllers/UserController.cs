@@ -27,10 +27,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("Login")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Authenticate()
         {
-            return Redirect("http://127.0.0.1:5500/login.html");
+            return Redirect("https://localhost:44377/user/login");
         }
 
         [HttpPost("Login")]
@@ -42,12 +42,10 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("User or password is not correct");
             }
-            //HttpContext.Session.SetString("Token", resultToken);
-            //var userCurrent = await userManager.GetUserAsync(HttpContext.User);
+
             var userCurrent = HttpContext.User;
-            return Ok(new { token = resultToken});
-            /*var name = User.Identity.Name;
-            return Redirect("http://127.0.0.1:5500/admin.html");*/
+            return Ok(resultToken);
+            
         }
 
         [HttpPost]
@@ -73,7 +71,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return Redirect("http://127.0.0.1:5500/login.html");
+            return Redirect("https://localhost:44377/user/login");
         }
 
     }

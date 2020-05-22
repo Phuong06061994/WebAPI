@@ -18,7 +18,7 @@ namespace WebAPI.Services
 
         public IEnumerable<News> GetAll()
         {
-            return  context.News;
+            return context.News;
         }
     }
 }

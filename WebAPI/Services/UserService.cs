@@ -39,7 +39,7 @@ namespace WebAPI.Services
             {
                 return null;
             }
-            var result = await signInManager.PasswordSignInAsync(user,model.Password,true,false);
+            var result = await signInManager.PasswordSignInAsync(user,model.Password,false,false);
             if (!result.Succeeded)
             {
                 return null;
@@ -54,7 +54,7 @@ namespace WebAPI.Services
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(config["Tokens : Issuer"], config["Tokens : Issuer"], claims, expires: DateTime.Now.AddHours(2), signingCredentials: creds);
+            var token = new JwtSecurityToken(config["Tokens:Issuer"], config["Tokens:Issuer"], claims, expires: DateTime.Now.AddHours(2), signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 

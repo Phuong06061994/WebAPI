@@ -38,6 +38,7 @@ namespace WebAPI
                     .AddDefaultTokenProviders();
 
             services.AddControllers();
+
            /* services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -53,6 +54,7 @@ namespace WebAPI
 
             services.ConfigureApplicationCookie(options =>
             {
+                options.Cookie.HttpOnly = true;
                 options.Cookie.Name = "PhuongNV35";
                 options.LoginPath = "/api/user/login";
             });

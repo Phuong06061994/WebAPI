@@ -39,15 +39,16 @@ namespace Web
             });
 
             services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<INewsApiClient, NewsApiClient>();
 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 #if DEBUG
-            /*if (environment == Environments.Development)
+            if (environment == Environments.Development)
             {
                 builder.AddRazorRuntimeCompilation();
-            }*/
+            }
 #endif
         }
 
