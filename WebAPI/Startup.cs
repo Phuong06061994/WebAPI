@@ -33,7 +33,6 @@ namespace WebAPI
             services.AddDbContext<APIContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
             services.AddIdentity<User, Role>()
-                    .AddRoles<Role>()
                     .AddEntityFrameworkStores<APIContext>()
                     .AddDefaultTokenProviders();
 
@@ -51,6 +50,7 @@ namespace WebAPI
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
 
             services.ConfigureApplicationCookie(options =>
             {

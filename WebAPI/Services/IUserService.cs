@@ -11,6 +11,10 @@ namespace WebAPI.Services
     {
         Task<IEnumerable<User>> GetAll();
         Task<string> Authenticate(AuthenticateModel model);
-        Task<bool> Create(CreateUserModel modle);
+        Task<bool> Create(UserModel model);
+
+        Task<UserModel> GetById(Guid id);
+
+        Task<bool> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }

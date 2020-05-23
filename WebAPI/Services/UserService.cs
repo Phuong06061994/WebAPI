@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -39,7 +40,7 @@ namespace WebAPI.Services
             {
                 return null;
             }
-            var result = await signInManager.PasswordSignInAsync(user,model.Password,false,false);
+            var result = await signInManager.PasswordSignInAsync(model.UserName,model.Password,false,false);
             if (!result.Succeeded)
             {
                 return null;
@@ -58,7 +59,7 @@ namespace WebAPI.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<bool> Create(CreateUserModel model)
+        public async Task<bool> Create(UserModel model)
         {
             var user = new User()
             {
@@ -75,9 +76,51 @@ namespace WebAPI.Services
             return false;
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            throw new NotImplementedException();
+            return await context.Users.ToListAsync();
+        }
+
+        public async Task<UserModel> GetById(Guid id)
+        {
+            var user = await userManager.FindByIdAsync(id.ToString());
+            var roles = await userManager.GetRolesAsync(user);
+
+            var userModel = new UserModel()
+            {
+                Username = user.UserName,
+                Roles = roles
+            };
+            return userModel;
+        }
+
+        public async Task<bool> RoleAssign(Guid id, RoleAssignRequest request)
+        {
+            var user = await userManager.FindByIdAsync(id.ToString());
+          /*  if (user == null)
+            {
+                return new ApiErrorResult<bool>("Tài khoản không tồn tại");
+            }*/
+            var removedRoles = request.Roles.Where(x => x.Selected == false).Select(x => x.Name).ToList();
+            foreach (var roleName in removedRoles)
+            {
+                if (await userManager.IsInRoleAsync(user, roleName) == true)
+                {
+                    await userManager.RemoveFromRoleAsync(user, roleName);
+                }
+            }
+            await userManager.RemoveFromRolesAsync(user, removedRoles);
+
+            var addedRoles = request.Roles.Where(x => x.Selected).Select(x => x.Name).ToList();
+            foreach (var roleName in addedRoles)
+            {
+                if (await userManager.IsInRoleAsync(user, roleName) == false)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                }
+            }
+
+            return true;
         }
 
         public User GetByUserName(string userName)

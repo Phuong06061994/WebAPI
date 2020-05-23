@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]CreateUserModel model)
+        public async Task<IActionResult> Create([FromBody]UserModel model)
         {
             var result = await userService.Create(model);
             if (!result)
@@ -59,12 +59,32 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-
-        public async Task<string> HomeAdmin()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            var userCurrent = await  userManager.GetUserAsync(User);
+            var data = await userService.GetAll();
+            return Ok(data);
+        }
 
-            return userCurrent.UserName;
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await userService.GetById(id);
+            return Ok(user);
+        }
+
+        [HttpPut("{id}/role")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody]RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await userService.RoleAssign(id, request);
+            if (!result)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         [HttpGet("Logout")]

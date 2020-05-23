@@ -12,7 +12,6 @@ namespace WebAPI.Entities
     public class Role : IdentityRole<Guid>
     {
 
-        public string Name { get; set; }
         public string Description { get; set; }
 
 

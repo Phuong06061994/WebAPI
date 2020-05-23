@@ -60,7 +60,7 @@ namespace WebAPI.Data
             modelBuilder.Entity<User>().HasData(new List<User>
             { new User
                 {
-                     Id = adminId,
+                    Id = adminId,
                     UserName = "admin",
                     NormalizedUserName = "admin",
                     Email = "tedu.international@gmail.com",
@@ -81,12 +81,12 @@ namespace WebAPI.Data
                     SecurityStamp = string.Empty
                 }
 
-            }) ;
+            });
 
-            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new List<IdentityUserRole<Guid>>
+           /* modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new List<IdentityUserRole<Guid>>
             { new IdentityUserRole<Guid>()
                 {
-                     RoleId = roleAdminId,
+                    RoleId = roleAdminId,
                     UserId = adminId
                 },
                 new IdentityUserRole<Guid>()
@@ -95,7 +95,7 @@ namespace WebAPI.Data
                     UserId = userId
                 },
 
-            });
+            });*/
 
         }
     }
