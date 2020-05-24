@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,8 +23,6 @@ namespace Web.Controllers
 
         public IActionResult Index()
         {
-            /*var session = HttpContext.Session.GetString("Token");
-            session.*/
             return View();
         }
 

@@ -45,12 +45,12 @@ namespace WebAPI.Services
             {
                 return null;
             }
-            var role = userManager.GetRolesAsync(user);
+            var role = userManager.GetRolesAsync(user).Result;
 
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, model.UserName),
-                new Claim(ClaimTypes.Role, string.Join(";", role))
+                new Claim(ClaimTypes.Role, string.Join(",",role))
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens:Key"]));

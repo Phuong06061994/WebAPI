@@ -8,6 +8,6 @@ namespace WebAPI.Services
 {
     public interface INewsService
     {
-        IEnumerable<News> GetAll();
+        Task<IEnumerable<News>> GetAll();
     }
 }

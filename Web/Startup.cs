@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using Web.Service;
 
 namespace Web
@@ -23,6 +24,8 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+           
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -68,10 +71,12 @@ namespace Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseAuthentication();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             app.UseRouting();
 

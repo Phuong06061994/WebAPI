@@ -18,10 +18,13 @@ namespace Web.Service
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public UserApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration,
+                            IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
+            _httpContextAccessor = httpContextAccessor;
+
         }
 
         public async Task<string> Authenticate(AuthenticateModel request)
@@ -40,7 +43,7 @@ namespace Web.Service
         public async Task<IEnumerable<UserModel>> GetAll(string bearerToken)
         {
             var client = _httpClientFactory.CreateClient();
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(bearerToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(bearerToken);
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             var response = await client.GetAsync("/api/user");
             var body = await response.Content.ReadAsStringAsync();
@@ -52,10 +55,10 @@ namespace Web.Service
 
         public async Task<UserModel> GetById(Guid id)
         {
-            //var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-           //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+           client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var response = await client.GetAsync($"/api/user/{id}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -80,9 +83,9 @@ namespace Web.Service
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-            //var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");

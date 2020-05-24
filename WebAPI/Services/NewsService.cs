@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,9 +17,9 @@ namespace WebAPI.Services
             this.context = context;
         }
 
-        public IEnumerable<News> GetAll()
+        public async Task<IEnumerable<News>> GetAll()
         {
-            return context.News;
+            return await context.News.ToListAsync<News>();
         }
     }
 }

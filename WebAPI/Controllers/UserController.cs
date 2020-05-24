@@ -38,6 +38,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
         {
             var resultToken = await userService.Authenticate(model);
+            var bo = User.IsInRole("admin");
             if (string.IsNullOrEmpty(resultToken))
             {
                 return BadRequest("User or password is not correct");

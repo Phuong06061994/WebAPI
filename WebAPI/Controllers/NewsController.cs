@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
 {   
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("Admin")]
+    [Authorize(Roles ="admin")]
     public class NewsController : ControllerBase
         
     {
@@ -24,9 +24,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<News> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return newsService.GetAll();
+            var data = await newsService.GetAll();
+            return Ok(data);
         }
     }
 }

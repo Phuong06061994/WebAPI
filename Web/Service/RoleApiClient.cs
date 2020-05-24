@@ -28,10 +28,10 @@ namespace Web.Service
 
         public async Task<List<RoleModel>> GetAll()
         {
-            //var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var response = await client.GetAsync($"/api/role");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
