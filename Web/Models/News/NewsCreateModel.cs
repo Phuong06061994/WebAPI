@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Models
+namespace Web.Models.News
 {
-    public class NewsModel
+    public class NewsCreateModel
     {
-        public int NewsId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Theme { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
-    public class News
+    public class News :EntityBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,7 +15,6 @@ namespace WebAPI.Entities
         public string Title { get; set; }
         public string Content { get; set; }
         public string Theme { get; set; }
-
 
     }
 }

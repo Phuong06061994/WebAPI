@@ -12,22 +12,69 @@ namespace WebAPI.Controllers
 {   
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="admin")]
+    [Authorize]
     public class NewsController : ControllerBase
         
     {
-        private readonly INewsService newsService;
+        private readonly INewsService _newsService;
 
         public NewsController(INewsService newsService)
         {
-            this.newsService = newsService;
+            _newsService = newsService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var data = await newsService.GetAll();
+            var data = await _newsService.GetAll();
             return Ok(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(News model)
+        {
+            var data = await _newsService.Save(model);
+            if(data < 0)
+            {
+                return  BadRequest("Cap nhat khong thanh cong");
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(News model)
+        {
+           
+            var data = await _newsService.Save(model);
+            if (data < 0)
+            {
+                return BadRequest("Cap nhat khong thanh cong");
+            }
+            return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var userCurrent = HttpContext.User.Identity.Name;
+
+            var news = await _newsService.GetById(id);
+
+            if (news.CreatedBy.Equals(userCurrent))
+            {
+                return Ok(news);
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var data = await _newsService.Delete(id);
+            if (data < 0)
+            {
+                return BadRequest("Cap nhat khong thanh cong");
+            }
+            return Ok();
         }
     }
 }

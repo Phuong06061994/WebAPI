@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -54,15 +55,21 @@ namespace WebAPI
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
 
-            services.ConfigureApplicationCookie(options =>
+            /*services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Name = "PhuongNV35";
                 options.LoginPath = "/api/user/login";
-            });
+            });*/
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/api/user/login";
+                    options.AccessDeniedPath = "/api/user/login";
+                });
 
-            /*services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger eShop Solution", Version = "v1" });
 
@@ -120,7 +127,7 @@ namespace WebAPI
                     ClockSkew = System.TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
                 };
-            });*/
+            });
 
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -138,14 +145,13 @@ namespace WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
-/*
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });*/
+            });
 
-            //app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

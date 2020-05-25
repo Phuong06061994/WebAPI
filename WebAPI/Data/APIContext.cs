@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebAPI.Entities;
 
 namespace WebAPI.Data
@@ -83,20 +84,51 @@ namespace WebAPI.Data
 
             });
 
-           /* modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new List<IdentityUserRole<Guid>>
-            { new IdentityUserRole<Guid>()
-                {
-                    RoleId = roleAdminId,
-                    UserId = adminId
-                },
-                new IdentityUserRole<Guid>()
-                {
-                     RoleId = roleUserId,
-                    UserId = userId
-                },
+            /* modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new List<IdentityUserRole<Guid>>
+             { new IdentityUserRole<Guid>()
+                 {
+                     RoleId = roleAdminId,
+                     UserId = adminId
+                 },
+                 new IdentityUserRole<Guid>()
+                 {
+                      RoleId = roleUserId,
+                     UserId = userId
+                 },
 
-            });*/
+             });*/
+
+            modelBuilder.Entity<News>().HasData(new List<News>
+            { new News()
+            {
+                NewsId =1,
+                Theme = "The Thao",
+                Content = "aaaaaaaaaaaaaaaaaaaaaaa",
+                Title = "Bong da",
+                CreatedBy = "user"
+
+            },
+             new News()
+            {
+                NewsId =2,
+                Theme = "The Thao",
+                Content = "bbbbbbbbbbbbbbbbbbbbbb",
+                Title = "Bong chuyen",
+                CreatedBy ="user"
+
+            },
+             new News()
+            {
+                 NewsId =3,
+                Theme = "The Thao",
+                Content = "ccccccccccccccccccccccc",
+                Title = "Bong ro",
+                CreatedBy ="user"
+
+            }
+            }); 
 
         }
+
     }
 }

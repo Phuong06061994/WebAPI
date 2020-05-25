@@ -12,7 +12,7 @@ namespace Web.Service
 
         Task<bool> Create(UserModel registerRequest);
 
-        Task<IEnumerable<UserModel>> GetAll(string bearerToken);
+        Task<IEnumerable<UserModel>> GetAll();
         Task<bool> RoleAssign(Guid id, RoleAssignRequest request);
 
         Task<UserModel> GetById(Guid id);

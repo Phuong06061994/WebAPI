@@ -40,10 +40,11 @@ namespace Web.Service
             return token;
         }
 
-        public async Task<IEnumerable<UserModel>> GetAll(string bearerToken)
+        public async Task<IEnumerable<UserModel>> GetAll()
         {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(bearerToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",sessions);
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             var response = await client.GetAsync("/api/user");
             var body = await response.Content.ReadAsStringAsync();

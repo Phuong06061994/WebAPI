@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 using WebAPI.Entities;
 using WebAPI.Models;
 using WebAPI.Services;
@@ -14,6 +12,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="admin")]
     public class UserController : ControllerBase
     {
         IUserService userService;
@@ -27,8 +26,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("Login")]
-        [Authorize]
-        public async Task<IActionResult> Authenticate()
+        [AllowAnonymous]
+        public IActionResult Authenticate()
         {
             return Redirect("https://localhost:44377/user/login");
         }
@@ -38,7 +37,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
         {
             var resultToken = await userService.Authenticate(model);
-            var bo = User.IsInRole("admin");
             if (string.IsNullOrEmpty(resultToken))
             {
                 return BadRequest("User or password is not correct");

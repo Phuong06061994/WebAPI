@@ -31,8 +31,7 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //var session = HttpContext.Session.GetString("Token");
-            var data = await _userApiClient.GetAll("session");
+            var data = await _userApiClient.GetAll();
             return View( data);
         }
 
@@ -131,7 +130,7 @@ namespace Web.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Index", "Home");
         }
 
         private ClaimsPrincipal ValidateToken(string jwtToken)
