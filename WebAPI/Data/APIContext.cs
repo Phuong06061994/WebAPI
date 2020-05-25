@@ -84,7 +84,7 @@ namespace WebAPI.Data
 
             });
 
-            /* modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new List<IdentityUserRole<Guid>>
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new List<IdentityUserRole<Guid>>
              { new IdentityUserRole<Guid>()
                  {
                      RoleId = roleAdminId,
@@ -96,7 +96,7 @@ namespace WebAPI.Data
                      UserId = userId
                  },
 
-             });*/
+             });
 
             modelBuilder.Entity<News>().HasData(new List<News>
             { new News()

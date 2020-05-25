@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="admin")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         IUserService userService;
@@ -48,6 +48,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([FromBody]UserModel model)
         {
             var result = await userService.Create(model);
@@ -59,6 +60,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> Index()
         {
             var data = await userService.GetAll();
@@ -66,6 +68,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var user = await userService.GetById(id);
@@ -73,12 +76,25 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{id}/role")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> RoleAssign(Guid id, [FromBody]RoleAssignRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var result = await userService.RoleAssign(id, request);
+            if (!result)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpPut("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody]UserChangePasswordModel request)
+        {
+
+            var result = await userService.ChangePassword(request);
             if (!result)
             {
                 return BadRequest(result);

@@ -42,8 +42,7 @@
                             Welcome @User.Identity.Name
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">Settings</a>
-                            <a class="dropdown-item" href="#">Activity Log</a>
+                            <a class="dropdown-item" asp-action="ChangePassword" asp-controller="User">Change password</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" asp-action="LogOut" asp-controller="User">Logout</a>
                         </div>

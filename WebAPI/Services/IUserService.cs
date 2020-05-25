@@ -16,5 +16,6 @@ namespace WebAPI.Services
         Task<UserModel> GetById(Guid id);
 
         Task<bool> RoleAssign(Guid id, RoleAssignRequest request);
+        Task<bool> ChangePassword(UserChangePasswordModel request);
     }
 }

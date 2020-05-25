@@ -127,5 +127,24 @@ namespace WebAPI.Services
         {
             return context.Users.SingleOrDefault(s => s.UserName == userName);
         }
+
+        public async Task<bool> ChangePassword(UserChangePasswordModel request)
+        {
+            var user = await userManager.FindByNameAsync(request.UserName);
+
+            var checkOldPassword = userManager.CheckPasswordAsync(user, request.OldPassword);
+
+            if (!checkOldPassword.Result)
+            {
+                return false;
+            }
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await userManager.ResetPasswordAsync(user, token, request.NewPassword);
+            if (result.Succeeded)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

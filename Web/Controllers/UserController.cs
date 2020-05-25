@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Web.Models;
+using Web.Models.User;
 using Web.Service;
 
 namespace Web.Controllers
@@ -70,15 +71,12 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public  async  Task<IActionResult> Create(UserModel model) 
+        public async Task<IActionResult> Create(UserModel model) 
         {
-            if (!ModelState.IsValid)
-                return View();
-
             var result = await _userApiClient.Create(model) ;
             if (result)
                 return RedirectToAction("Index");
-            return View( model);
+            return BadRequest("Tao khong thanh cong");
         }
 
         [HttpGet]
@@ -98,7 +96,7 @@ namespace Web.Controllers
 
             if (result)
             {
-                TempData["result"] = "Cập nhật quyền thành công";
+               
                 return RedirectToAction("Index");
             }
 
@@ -123,6 +121,24 @@ namespace Web.Controllers
                 });
             }
             return roleModel;
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(UserChangePasswordModel model)
+        {
+            model.UserName = User.Identity.Name;
+             var resut =  await _userApiClient.ChangePassword( model);
+            if (resut)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return BadRequest("Doi mat khau khong thanh cong");
         }
 
         [HttpGet]

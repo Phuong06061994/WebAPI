@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,11 +14,13 @@ namespace WebAPI.Services
 {
     public class NewsService : INewsService
     {
-        APIContext _context;
+        private readonly APIContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public NewsService(APIContext context)
+        public NewsService(APIContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<int> Save(News model)
@@ -53,9 +56,15 @@ namespace WebAPI.Services
         public async Task<int> Delete(int id)
         {
             var news =  await _context.FindAsync<News>(id);
-            _context.Remove<News>(news);
-            
-            return await _context.SaveChangesAsync();
+            var userCurrent = _httpContextAccessor.HttpContext.User.Identity.Name;
+
+            if (userCurrent.Equals(news.CreatedBy) || userCurrent.Equals("admin"))
+            {
+                _context.Remove<News>(news);
+
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
     }
 }

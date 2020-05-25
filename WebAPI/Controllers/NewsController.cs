@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
 
             var news = await _newsService.GetById(id);
 
-            if (news.CreatedBy.Equals(userCurrent))
+            if (userCurrent.Equals(news.CreatedBy) || userCurrent.Equals("admin"))
             {
                 return Ok(news);
             }
@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
             var data = await _newsService.Delete(id);
             if (data < 0)
             {
-                return BadRequest("Cap nhat khong thanh cong");
+                return BadRequest();
             }
             return Ok();
         }
