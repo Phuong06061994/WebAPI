@@ -12,5 +12,7 @@ namespace DAL.Repository
     {
         Task<IEnumerable<NewsResponse>> GetAll();
         Task<int> Create(NewsRequest request);
+        Task<int> Update(NewsRequest request);
+        Task<int> Delete(int id);
     }
 }

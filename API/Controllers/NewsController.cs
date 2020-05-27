@@ -27,11 +27,33 @@ namespace API.Controllers
         public async Task<IActionResult> Create([FromForm]NewsRequest request)
         {
             var data = await _newsRepository.Create(request);
-            if(data > 0)
+            if(data < 0)
             {
                 return BadRequest();
             }
             return Ok(data);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] NewsRequest request)
+        {
+            var data = await _newsRepository.Update(request);
+            if (data < 0)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("/{id}")]
+        public async Task<IActionResult> Detele( int id)
+        {
+            var data = await _newsRepository.Delete(id);
+            if (data < 0)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
     }
 }
