@@ -9,7 +9,7 @@ CREATE PROCEDURE Delete_News_ById
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT OFF
 
    delete from News where NewsId = @Id ;
    

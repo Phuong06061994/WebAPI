@@ -16,7 +16,7 @@ CREATE PROCEDURE Create_News
 AS
 BEGIN
 	
-	SET NOCOUNT ON;
+	SET NOCOUNT OFF
 
    insert into News(Title, Content, Theme, CreatedBy) values (@Title,@Content,@Theme, @CreatedBy);
    set @id = SCOPE_IDENTITY();
