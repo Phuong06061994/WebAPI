@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DAL.Request;
+using DAL.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +13,9 @@ namespace Web.Service
     {
         Task<IEnumerable<NewsModel>> GetAll();
 
-        Task<bool> Create(NewsCreateModel model);
-        public Task<bool> Update(NewsModel model);
-        Task<NewsModel> GetById(int id);
+        Task<bool> Create(NewsRequest model);
+        public Task<bool> Update(NewsResponse model);
+        Task<NewsResponse> GetById(int id);
         Task<bool> Delete(int id);
     }
 }

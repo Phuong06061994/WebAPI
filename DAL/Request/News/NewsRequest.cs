@@ -10,6 +10,7 @@ namespace DAL.Request
         public string Title { get; set; }
         public string Content { get; set; }
         public string Theme { get; set; }
+        public Guid UserId { get; set; }
         public string CreatedBy { get; set; }
     }
 }

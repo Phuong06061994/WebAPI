@@ -35,7 +35,7 @@ namespace Web.Service
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-            var response = await client.PostAsync("/api/user/login", httpContent);
+            var response = await client.PostAsync("/api/account/login", httpContent);
             var token = await response.Content.ReadAsStringAsync();
 
             return token;

@@ -1,10 +1,7 @@
 ﻿using DAL.Request;
 using DAL.Response;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using WebAPI.Entities;
 
 namespace DAL.Repository
 {
@@ -14,5 +11,6 @@ namespace DAL.Repository
         Task<int> Create(NewsRequest request);
         Task<int> Update(NewsRequest request);
         Task<int> Delete(int id);
+        Task<NewsResponse> GetById(int id);
     }
 }

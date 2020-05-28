@@ -17,10 +17,11 @@ namespace API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-
-        public AccountController(IUserRepository userRepository)
+        private readonly IPermissionRepository _permissionRepository;
+        public AccountController(IUserRepository userRepository, IPermissionRepository permissionRepository)
         {
             _userRepository = userRepository;
+            _permissionRepository = permissionRepository;
         }
 
         [HttpPost("Login")]

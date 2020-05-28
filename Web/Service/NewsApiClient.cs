@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DAL.Request;
+using DAL.Response;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -38,7 +40,7 @@ namespace Web.Service
             return listOfNews;
         }
 
-        public async Task<bool> Create(NewsCreateModel model)
+        public async Task<bool> Create(NewsRequest model)
         {
 
             var json = JsonConvert.SerializeObject(model);
@@ -49,7 +51,7 @@ namespace Web.Service
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> Update(NewsModel model)
+        public async Task<bool> Update(NewsResponse model)
         {
 
             var json = JsonConvert.SerializeObject(model);
@@ -62,13 +64,13 @@ namespace Web.Service
 
 
 
-        public async Task<NewsModel> GetById(int id)
+        public async Task<NewsResponse> GetById(int id)
         {
             var response = await getClient().GetAsync($"/api/news/{id}");
 
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<NewsModel>(body);
+                return JsonConvert.DeserializeObject<NewsResponse>(body);
 
             return null;
         }

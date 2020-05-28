@@ -5,11 +5,13 @@ using DAL.Request.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.Constant;
 
 namespace DAL.Repository.Impl
 {
@@ -21,9 +23,10 @@ namespace DAL.Repository.Impl
         private readonly IConfiguration _config;
         private readonly string _connectStrings;
         private readonly IMapper _mapper;
-
+        private readonly IPermissionRepository _permissionRepository;
         public UserRepository(UserManager<User> userManager, SignInManager<User> signInManager,
-            RoleManager<Role> roleManager, IConfiguration config, IMapper mapper)
+            RoleManager<Role> roleManager, IConfiguration config, IMapper mapper,
+            IPermissionRepository permissionRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -31,6 +34,7 @@ namespace DAL.Repository.Impl
             _connectStrings = config.GetConnectionString(ConstantSystem.DB_CONNECT);
             _mapper = mapper;
             _config = config;
+            _permissionRepository = permissionRepository;
         }
 
         public async Task<string> Authenticate(AuthenticateRequest request)
@@ -46,9 +50,12 @@ namespace DAL.Repository.Impl
                 return null;
             }
             var role = _userManager.GetRolesAsync(user).Result;
+            var permissions = await _permissionRepository.GetAllByUserId(user.Id);
 
             var claims = new[]
             {
+                new Claim(SystemConstants.UserClaim.Id, user.Id.ToString()),
+                new Claim(SystemConstants.UserClaim.Permissions,JsonConvert.SerializeObject(permissions)),
                 new Claim(ClaimTypes.Name, request.UserName),
                 new Claim(ClaimTypes.Role, string.Join(",",role))
             };

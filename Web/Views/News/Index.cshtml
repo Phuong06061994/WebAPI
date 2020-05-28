@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Theme)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
+               CreatedBy
             </th>
             <th></th>
         </tr>
@@ -46,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.Theme)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
+                @User.Identity.Name
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.NewsId }) |

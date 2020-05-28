@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
+using DAL.Dto;
 using DAL.Request;
 using DAL.Response;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using WebAPI.Entities;
 
 namespace DAL.Repository.Impl
 {
@@ -31,7 +29,7 @@ namespace DAL.Repository.Impl
         {
             using (var conn = new SqlConnection(_connectStrings))
             {
-                if(conn.State == System.Data.ConnectionState.Closed)
+                if(conn.State == ConnectionState.Closed)
                 {
                     conn.Open();
 
@@ -56,7 +54,7 @@ namespace DAL.Repository.Impl
                 paramaters.Add("@Title", request.Title);
                 paramaters.Add("@Theme", request.Theme);
                 paramaters.Add("@Content", request.Content);
-                paramaters.Add("@CreatedBy", request.CreatedBy);
+                paramaters.Add("@UserId", request.UserId);
 
                 var result = await conn.ExecuteAsync("Create_News", paramaters, null, null, CommandType.StoredProcedure);
 
@@ -77,7 +75,7 @@ namespace DAL.Repository.Impl
                 paramaters.Add("@Title", request.Title);
                 paramaters.Add("@Theme", request.Theme);
                 paramaters.Add("@Content", request.Content);
-                paramaters.Add("@CreatedBy", request.CreatedBy);
+                paramaters.Add("@UserId", request.UserId);
                 paramaters.Add("@id",request.NewsId);
 
                 var result = await conn.ExecuteAsync("Update_News_ById", paramaters, null, null, CommandType.StoredProcedure);
@@ -100,6 +98,23 @@ namespace DAL.Repository.Impl
                 var result = await conn.ExecuteAsync("Delete_News_ById", paramaters, null, null, CommandType.StoredProcedure);
 
                 return result;
+            }
+        }
+
+        public async Task<NewsResponse> GetById(int id)
+        {
+            using (var conn = new SqlConnection(_connectStrings))
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                
+                var paramater = new DynamicParameters();
+                paramater.Add("@id", id);
+                var result = await conn.QueryAsync<NewsResponse>("Get_News_ById", paramater, null, null, CommandType.StoredProcedure);
+               
+                return result.FirstOrDefault();
             }
         }
     }

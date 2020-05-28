@@ -1,3 +1,5 @@
+using AutoMapper;
+using DAL.Mapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +26,6 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
            
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -41,6 +42,14 @@ namespace Web
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUserApiClient, UserApiClient>();

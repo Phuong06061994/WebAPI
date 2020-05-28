@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL.Request;
+using DAL.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Utilities.Constant;
 using Web.Models;
 using Web.Models.News;
 using Web.Service;
@@ -35,10 +38,10 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(NewsCreateModel model)
+        public async Task<IActionResult> Create(NewsRequest model)
         {
-            var userName = User.Identity.Name;
-            model.CreatedBy = userName;
+            var userId = User.Claims.First(c => c.Type == SystemConstants.UserClaim.Id).Value;
+            model.UserId = Guid.Parse(userId);
 
             var data = await _newsApiClient.Create(model);
             if(data == false)
@@ -61,7 +64,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(NewsModel model)
+        public async Task<IActionResult> Edit(NewsResponse model)
         {
             var data = await _newsApiClient.Update(model);
             if (data == false)

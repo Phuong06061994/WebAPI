@@ -1,0 +1,18 @@
+USE [DBContext]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE Get_News_ById
+@id int
+
+AS
+
+BEGIN
+
+	SET NOCOUNT ON;
+	SELECT NewsId , Title, Theme, Content, CreatedBy FROM News WHERE NewsId = @id;
+
+END

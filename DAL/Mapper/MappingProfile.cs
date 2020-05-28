@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using DAL.Repository.Impl;
+using DAL.Dto;
 using DAL.Request;
 using DAL.Response;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using WebAPI.Entities;
 
 namespace DAL.Mapper
 {

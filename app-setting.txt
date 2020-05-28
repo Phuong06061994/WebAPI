@@ -1,0 +1,6 @@
+ "ConnectionStrings": {
+    "DBContext": "Server=.\\SQLEXPRESS;Database=DbContext;User Id=sa; Password=sa;Trusted_Connection=True; MultipleActiveResultSets=true; "
+  },
+  "ConnectionStrings": {
+    "DBContext": "Server=Phuong;Database=DbContext;User Id=sa; Password=sa;Trusted_Connection=True; MultipleActiveResultSets=true; "
+  },
