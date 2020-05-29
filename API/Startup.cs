@@ -7,6 +7,7 @@ using DAL.Store;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -80,6 +81,11 @@ namespace API
                 };
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/api/account");
+            });
+
 
         }
 
@@ -94,9 +100,6 @@ namespace API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

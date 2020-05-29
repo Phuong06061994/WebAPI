@@ -2,12 +2,18 @@
 using DAL.Constant;
 using DAL.Dto;
 using DAL.Request.User;
+using DAL.Response;
+using DAL.Response.User;
+using Dapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +27,7 @@ namespace DAL.Repository.Impl
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _config;
-        private readonly string _connectStrings;
+        private readonly string _connectionString;
         private readonly IMapper _mapper;
         private readonly IPermissionRepository _permissionRepository;
         public UserRepository(UserManager<User> userManager, SignInManager<User> signInManager,
@@ -31,7 +37,7 @@ namespace DAL.Repository.Impl
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            _connectStrings = config.GetConnectionString(ConstantSystem.DB_CONNECT);
+            _connectionString = config.GetConnectionString(ConstantSystem.DB_CONNECT);
             _mapper = mapper;
             _config = config;
             _permissionRepository = permissionRepository;
@@ -82,6 +88,32 @@ namespace DAL.Repository.Impl
             }
             return false;
 
+        }
+
+        public async Task<IEnumerable<UserResponse>> GetAll()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                    await conn.OpenAsync();
+
+                var result = await conn.QueryAsync<UserResponse>("Get_User_All", null, null, null, System.Data.CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        public async Task<UserDetailResponse> GetUserById(Guid id)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                    await conn.OpenAsync();
+
+                var paramater = new DynamicParameters();
+                paramater.Add("@id", id.ToString());
+                var result = await conn.QueryAsync<UserDetailResponse>("Get_User_ById", paramater, null, null, System.Data.CommandType.StoredProcedure);
+                return result.FirstOrDefault();
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using DAL.Request.User;
+using DAL.Response;
+using DAL.Response.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +12,7 @@ namespace DAL.Repository
     {
         Task<String> Authenticate(AuthenticateRequest request);
         Task<bool> Create(AuthenticateRequest model);
+        Task<IEnumerable<UserResponse>> GetAll();
+        Task<UserDetailResponse> GetUserById(Guid id);
     }
 }

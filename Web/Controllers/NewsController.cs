@@ -24,8 +24,15 @@ namespace Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-           
             var data = await _newsApiClient.GetAll();
+            if(data == null)
+            {
+                if (User.Identity.IsAuthenticated){
+                    TempData["message"] = "You are not authorization";
+                    return RedirectToAction("Index", "Home");
+                }
+                return RedirectToAction("Login", "User");
+            }
             
             return View(data);
         }

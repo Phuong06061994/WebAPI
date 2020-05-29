@@ -22,6 +22,20 @@ namespace API.Controllers
             _userRepository = userRepository;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _userRepository.GetAll();
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAll(Guid id)
+        {
+            var result = await _userRepository.GetUserById(id);
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromForm]AuthenticateRequest model)
         {   
@@ -32,8 +46,6 @@ namespace API.Controllers
                 return BadRequest("Create new user is not successed");
             }
             return Ok();
-                
-            
            
         }
     }

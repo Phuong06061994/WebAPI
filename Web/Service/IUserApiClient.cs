@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DAL.Response;
+using DAL.Response.User;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Web.Models;
 using Web.Models.User;
@@ -13,10 +14,12 @@ namespace Web.Service
 
         Task<bool> Create(UserModel registerRequest);
 
-        Task<IEnumerable<UserModel>> GetAll();
+        Task<IEnumerable<UserResponse>> GetAll();
         Task<bool> RoleAssign(Guid id, RoleAssignRequest request);
 
         Task<bool> ChangePassword(UserChangePasswordModel model);
-        Task<UserModel> GetById(Guid id);
+        //Task<UserModel> GetById(Guid id);
+
+        Task<UserDetailResponse> GetById(Guid id);
     }
 }

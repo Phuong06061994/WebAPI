@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DAL.Response;
+using DAL.Response.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -41,7 +43,7 @@ namespace Web.Service
             return token;
         }
 
-        public async Task<IEnumerable<UserModel>> GetAll()
+        public async Task<IEnumerable<UserResponse>> GetAll()
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
@@ -50,12 +52,12 @@ namespace Web.Service
             var response = await client.GetAsync("/api/user");
             var body = await response.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<IEnumerable<UserModel>>(body);
+            var users = JsonConvert.DeserializeObject<IEnumerable<UserResponse>>(body);
 
             return users;
         }
 
-        public async Task<UserModel> GetById(Guid id)
+        public async Task<UserDetailResponse> GetById(Guid id)
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
@@ -64,7 +66,7 @@ namespace Web.Service
             var response = await client.GetAsync($"/api/user/{id}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<UserModel>(body);
+                return JsonConvert.DeserializeObject<UserDetailResponse>(body);
 
             return null;
         }
@@ -125,6 +127,7 @@ namespace Web.Service
 
             return JsonConvert.DeserializeObject<bool>(result);
         }
+
     }
 }
 

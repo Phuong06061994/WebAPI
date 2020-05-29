@@ -36,5 +36,11 @@ namespace API.Controllers
             return Ok(resultToken);
 
         }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return Redirect("https://localhost:44377/user/login");
+        }
     }
 }

@@ -23,6 +23,10 @@ namespace Web.Controllers
 
         public IActionResult Index()
         {
+            if(TempData["message"] != null)
+            {
+                ViewBag.MessageError = TempData["message"];
+            }
             return View();
         }
 

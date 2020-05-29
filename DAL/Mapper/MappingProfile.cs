@@ -11,6 +11,8 @@ namespace DAL.Mapper
         {
             CreateMap<NewsRequest, News>();
             CreateMap<News, NewsResponse>();
+
+            CreateMap<User, UserResponse>();
         }
     }
 }
