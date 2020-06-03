@@ -25,7 +25,7 @@ namespace DAL.Repository.Impl
 
        
 
-        public async Task<IEnumerable<NewsResponse>> GetAll()
+        public async Task<IEnumerable<NewsModel>> GetAll()
         {
             using (var conn = new SqlConnection(_connectStrings))
             {
