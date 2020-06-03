@@ -52,13 +52,11 @@ namespace Web.Service
             var response = await client.GetAsync("/api/user");
             var body = await response.Content.ReadAsStringAsync();
 
-                var users = JsonConvert.DeserializeObject<IEnumerable<UserModel>>(body);
             var users = JsonConvert.DeserializeObject<IEnumerable<UserResponse>>(body);
 
             return users;
         }
 
-        public async Task<UserModel> GetById(Guid id)
         public async Task<UserDetailResponse> GetById(Guid id)
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
