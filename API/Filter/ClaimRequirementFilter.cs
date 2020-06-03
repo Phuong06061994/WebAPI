@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System;
@@ -31,12 +32,12 @@ namespace API.Filter
                 var permissions = JsonConvert.DeserializeObject<List<string>>(permissionsClaim.Value);
                 if (!permissions.Contains(_function + "_" + _action))
                 {
-                    context.HttpContext.Response.StatusCode = 401;
+                    context.Result = new UnauthorizedResult();
                 }
             }
             else
             {
-                context.HttpContext.Response.StatusCode = 401;
+                context.Result = new ForbidResult();
             }
         }
     }

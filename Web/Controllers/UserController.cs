@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using DAL.Response.User;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -79,49 +80,49 @@ namespace Web.Controllers
             return BadRequest("Tao khong thanh cong");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> RoleAssign(Guid id)
-        {
-            var roleAssignRequest = await GetRoleAssignRequest(id);
-            return View(roleAssignRequest);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> RoleAssign(Guid id)
+        //{
+        //    var roleAssignRequest = await GetRoleAssignRequest(id);
+        //    return View(roleAssignRequest);
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
-        {
-            if (!ModelState.IsValid)
-                return View();
+        //[HttpPost]
+        //public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return View();
 
-            var result = await _userApiClient.RoleAssign(request.Id, request);
+        //    var result = await _userApiClient.RoleAssign(request.Id, request);
 
-            if (result)
-            {
+        //    if (result)
+        //    {
                
-                return RedirectToAction("Index");
-            }
+        //        return RedirectToAction("Index");
+        //    }
 
-            //ModelState.AddModelError("", result.Message);
-            var roleAssignRequest = await GetRoleAssignRequest(request.Id);
+        //    //ModelState.AddModelError("", result.Message);
+        //    var roleAssignRequest = await GetRoleAssignRequest(request.Id);
 
-            return View(roleAssignRequest);
-        }
+        //    return View(roleAssignRequest);
+        //}
 
-        private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
-        {
-            var userObj = await _userApiClient.GetById(id);
-            var roles = await _roleApiClient.GetAll();
-            var roleModel = new RoleAssignRequest();
-            foreach (var role in roles)
-            {
-                roleModel.Roles.Add(new SelectItem()
-                {
-                    Id = role.Id.ToString(),
-                    Name = role.Name,
-                    Selected = userObj.Roles.Contains(role.Name)
-                });
-            }
-            return roleModel;
-        }
+        //private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
+        //{
+        //    var userObj = await _userApiClient.GetById(id);
+        //    var roles = await _roleApiClient.GetAll();
+        //    var roleModel = new RoleAssignRequest();
+        //    foreach (var role in roles)
+        //    {
+        //        roleModel.Roles.Add(new SelectItem()
+        //        {
+        //            Id = role.Id.ToString(),
+        //            Name = role.Name,
+        //            Selected = userObj.Roles.Contains(role.Name)
+        //        });
+        //    }
+        //    return roleModel;
+        //}
 
         [HttpGet]
         public IActionResult ChangePassword()
@@ -139,6 +140,14 @@ namespace Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return BadRequest("Doi mat khau khong thanh cong");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(Guid id)
+        {
+            var userObj = await _userApiClient.GetById(id);
+           
+            return View(userObj);
         }
 
         [HttpGet]

@@ -33,6 +33,10 @@ namespace Web.Service
         {
             
             var response = await getClient().GetAsync("/api/news");
+            if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return null;
+            }
             var body = await response.Content.ReadAsStringAsync();
 
             var listOfNews = JsonConvert.DeserializeObject<IEnumerable<NewsModel>>(body);
