@@ -13,6 +13,9 @@ namespace DAL.Mapper
             CreateMap<News, NewsResponse>();
 
             CreateMap<User, UserResponse>();
+             CreateMap<User, UserResponse>();
+              CreateMap<User, UserResponse>();
+               CreateMap<User, UserResponse>();
         }
     }
 }
