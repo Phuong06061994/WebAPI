@@ -31,12 +31,12 @@ namespace API.Filter
                 var permissions = JsonConvert.DeserializeObject<List<string>>(permissionsClaim.Value);
                 if (!permissions.Contains(_function + "_" + _action))
                 {
-                    context.Result = new UnauthorizedObjectResult("401");
+                    context.HttpContext.Response.StatusCode = 401;
                 }
             }
             else
             {
-                context.Result = new UnauthorizedObjectResult("401");
+                context.HttpContext.Response.StatusCode = 401;
             }
         }
     }

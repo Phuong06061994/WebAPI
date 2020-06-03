@@ -9,7 +9,6 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class NewsController : ControllerBase
     {
         private readonly INewsRepository _newsRepository;
@@ -20,9 +19,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [ClaimRequirement(FunctionCode.ADMIN, ActionCode.CREATE)]
+        [ClaimRequirement(FunctionCode.ADMIN, ActionCode.VIEW)]
         public async Task<IActionResult> GetAll()
         {
+            if(HttpContext.Response.StatusCode == 401)
+            {
+                return BadRequest("401");
+            }
             var data = await _newsRepository.GetAll();
             return Ok(data);
         }

@@ -48,11 +48,13 @@ namespace Web.Service
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",sessions);
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             var response = await client.GetAsync("/api/user");
-            var body = await response.Content.ReadAsStringAsync();
-
-            var users = JsonConvert.DeserializeObject<IEnumerable<UserModel>>(body);
-
-            return users;
+            if(response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                var users = JsonConvert.DeserializeObject<IEnumerable<UserModel>>(body);
+                return users;
+            }
+            return null; 
         }
 
         public async Task<UserModel> GetById(Guid id)

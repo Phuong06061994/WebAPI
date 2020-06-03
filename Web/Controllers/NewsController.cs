@@ -26,6 +26,10 @@ namespace Web.Controllers
         {
            
             var data = await _newsApiClient.GetAll();
+            if(data == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
             
             return View(data);
         }
