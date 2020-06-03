@@ -34,7 +34,7 @@ namespace DAL.Repository.Impl
                     conn.Open();
 
                 }
-
+                var result3 = await conn.QueryAsync<News>("Get_News_All", null, null, null, CommandType.Text);
                 var result = await conn.QueryAsync<News>("Get_News_All", null, null, null, CommandType.Text);
                 var resultResponse = _mapper.Map<IEnumerable<News>,IEnumerable<NewsResponse>>(result);
                 return resultResponse;
