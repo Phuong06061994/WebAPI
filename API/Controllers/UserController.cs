@@ -40,7 +40,7 @@ namespace API.Controllers
         public async Task<IActionResult> Create([FromForm]AuthenticateRequest model)
         {   
            
-            var result = await _userRepository.Create(data);
+            
             if (!result)
             {
                 return BadRequest("Create new user is not successed");
